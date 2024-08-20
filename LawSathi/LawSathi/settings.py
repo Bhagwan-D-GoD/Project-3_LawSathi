@@ -42,12 +42,16 @@ INSTALLED_APPS = [
     "LawyerRecommendation",
     "VideoConsultation",
     'social_django', #for gmail login
+    'rest_framework',
+    'corsheaders',
+    'django_extensions',
     
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -55,6 +59,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',#exception handeling of social login
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True  # Update as needed for production
 
 ROOT_URLCONF = 'LawSathi.urls'
 
@@ -161,7 +167,7 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL= 'newsportal'
 LOGOUT_URL = 'logout'
-LOGOUT_REDIRECT_URL= 'userlogin' 
+LOGOUT_REDIRECT_URL= 'login' 
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('GOOGLE_CLIENT_ID') #'<your-client-id>'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_SECRET_KEY')#<your-client-secret>'
