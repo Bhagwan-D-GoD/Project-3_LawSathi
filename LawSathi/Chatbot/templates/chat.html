@@ -56,7 +56,7 @@
 
     #send-button {
         padding: 10px 20px;
-        background-color: #ff007b;
+        background-color: #2980b9;
         color: white;
         border: none;
         border-radius: 5px;
@@ -64,7 +64,7 @@
     }
 
     #send-button:hover {
-        background-color: #e6006f;
+        background-color: #2980b9;
     }
 
     .message {
@@ -155,6 +155,22 @@
     }
 }
 
+/* Style for the report button */
+.report-button {
+    background-color: #031d2e;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.report-button:hover {
+    background-color: #05283f;
+}
 
 </style>
 
@@ -168,9 +184,21 @@
         <!-- Initial bot message -->
         <div class="message bot-message">
             <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Bot Icon">
-            <div>You can ask anything related to the law of Nepal.</div>
+            <div>You can ask anything related to the law of Nepal. If you are not satisfied with our responses you can report your query and we will work on it to provide best result on it form our side.
+            </div>
         </div>
         <!-- Messages will be appended here -->
+        {% for message in conversation %}
+        <div class="message user-message">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="User Icon">
+            <div>{{ message.user }}</div>
+            <button class="report-button">Report</button>
+        </div>
+        <div class="message bot-message">
+            <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Bot Icon">
+            <div>{{ message.bot }}</div>
+        </div>
+    {% endfor %}
     </div>
     <div id="input-container">
         <input type="text" id="user-input" placeholder="Type your message here...">
@@ -198,6 +226,7 @@
                 <div class="message user-message">
                     <img src="https://www.w3schools.com/howto/img_avatar.png" alt="User Icon">
                     <div>${message}</div>
+                    <button class="report-button">Report</button>
                 </div>`;
             userInput.value = '';
 
@@ -281,7 +310,38 @@
                 sendButton.click();
             }
         });
+
+        // Handle report button click
+chatBox.addEventListener('click', async (event) => {
+        if (event.target.classList.contains('report-button')) {
+            const messageDiv = event.target.closest('.message');
+            const messageContent = messageDiv.querySelector('div').textContent;
+            const isUserMessage = messageDiv.classList.contains('user-message');
+            const botResponse = messageDiv.nextElementSibling?.querySelector('div')?.textContent || '';
+
+            try {
+                await fetch('/report/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        // user_query: 'test query',
+                        // bot_response: 'test response',
+                        user_query: isUserMessage ? messageContent : '',
+                        bot_response: botResponse  ,
+                    }),
+                });
+                alert('Report submitted successfully.');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to submit the report.');
+            }
+        }
     });
+    });
+
+    
 </script>
 
 {%endblock script%}

@@ -42,7 +42,6 @@
                     </div>
                 <div class="options">
                     <label><input type="checkbox"> Remember password</label>
-                    <a class="forgot_pw" href="#">Forgot password?</a>
                 </div>
                 <button class="submit" type="submit">Login</button>
             </form>
@@ -60,7 +59,7 @@
                                     <path fill="none" d="M0 0h48v48H0z"></path>
                                 </svg>
                             </div>
-                            <a href="{% url 'social:begin' 'google-oauth2' %}">
+                            <a id ='no-highlight' href="{% url 'social:begin' 'google-oauth2' %}">
                             <span class="gsi-material-button-contents">Sign in with Google</span>
                             <span style="display: none;">Sign in with Google</span></a>
                         </div>
@@ -70,7 +69,7 @@
                 <div class="new-to-law-saathi">
                     New to LAW साथी?
                 </div>
-                <button class="button" type="button"><a href="{% url 'choose' %}">Register</a></button>
+                <button class="button" type="button"><a id = 'no-highlight' href="{% url 'choose' %}">Register</a></button>
             </div>
         </div>
         
